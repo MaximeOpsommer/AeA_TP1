@@ -3,14 +3,18 @@ package io;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Reader {
 	
 	private BufferedReader buffer;
 	private String file;
+	private Set<Character> alphabet;
 	
 	public Reader(String file){
 		this.file = file;
+		this.alphabet = new HashSet<Character>();
 	}
 	
 	/**
@@ -29,6 +33,11 @@ public class Reader {
 	    }
 	    return builder.toString();
 	}
+	
+	public void checkIfNewLetters(String line) {
+		for(char c : line.toCharArray())
+			alphabet.add(c);
+	}
 
 	public BufferedReader getBuffer() {
 		return buffer;
@@ -40,6 +49,10 @@ public class Reader {
 
 	public String getFile() {
 		return file;
+	}
+	
+	public Set<Character> getAlphabet() {
+		return this.alphabet;
 	}
 
 	public void setFile(String file) {
