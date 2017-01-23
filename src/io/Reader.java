@@ -13,8 +13,12 @@ public class Reader {
 		this.file = file;
 	}
 	
-	//read a specific file
-	public String read() throws IOException{
+	/**
+	 * Read a ".fasta" file. Returns the DNA sequence
+	 * @return String
+	 * @throws IOException
+	 */
+	public String readFasta() throws IOException{
 		FileReader fr = new FileReader(this.file);
 		StringBuilder builder = new StringBuilder();
 		buffer = new BufferedReader(fr);
