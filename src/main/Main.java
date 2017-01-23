@@ -11,6 +11,7 @@ public class Main {
 		Set<Character> alphabet = r.getAlphabet();
 		try {
 			System.out.println(r.readFasta());
+			System.out.println(alphabet);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -26,16 +26,18 @@ public class Reader {
 		FileReader fr = new FileReader(this.file);
 		StringBuilder builder = new StringBuilder();
 		buffer = new BufferedReader(fr);
-		String line;
+		String line, res;
 		buffer.readLine(); //first line is not an DNA sequence
 	    while ((line = buffer.readLine()) != null) {
 	    	builder.append(line);
 	    }
-	    return builder.toString();
+	    res = builder.toString();
+	    createAlphabet(res);
+	    return res;
 	}
 	
-	public void checkIfNewLetters(String line) {
-		for(char c : line.toCharArray())
+	public void createAlphabet(String str) {
+		for(char c : str.toCharArray())
 			alphabet.add(c);
 	}
 
