@@ -57,4 +57,13 @@ public class KMPResolverTest {
 		Assert.assertFalse(kmp.isPrefix("GG", "TAGGGG"));
 	}
 	
+	@Test
+	public void searchOccsTest(){
+		Integer[] expectedOccs1 = new Integer[]{0,3,7,10};
+		Integer[] expectedOccs2 = new Integer[]{0,7,10};
+		
+		Assert.assertArrayEquals(expectedOccs1, kmp.searchOcc("T"));
+		Assert.assertArrayEquals(expectedOccs2, kmp.searchOcc("TAC"));
+	}
+	
 }

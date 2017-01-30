@@ -1,5 +1,7 @@
 package structure.resolver;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class KMPResolver {
@@ -12,6 +14,38 @@ public class KMPResolver {
 	public KMPResolver(String dna, Set<Character> alphabet) {
 		this.dna = dna;
 		this.alphabet = alphabet;
+	}
+	
+	public Integer[] searchOcc(String motif){
+		initNext(motif);
+		
+		List<Integer> occs = new ArrayList<>();
+		
+		int i = 0;
+		while(i < dna.length()){
+			
+			//TODO search
+			if(checkMotif(i))
+				occs.add(i);
+			
+			i++;
+		}
+		
+		
+		return (Integer[]) occs.toArray();
+		
+		
+	}
+	
+	public boolean checkMotif(int position){
+		for(int i = position; i < motif.length();i++){
+			if(motif.charAt(i) != dna.charAt(position)){
+				position -= next[i];
+				return false;
+			}
+			position++;
+		}
+		return true;
 	}
 
 	public void initNext(String motif) {
@@ -37,7 +71,6 @@ public class KMPResolver {
 					}
 				}
 			}
-
 		}
 		return max;
 	}
