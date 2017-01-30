@@ -1,26 +1,23 @@
 package structure.resolver;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class ShiftOrResolver {
 	
+	private char[] alphabet;
 	private final String RNA;
-	private final Set<Character> alphabet;
 	private int[][] vecteurs;
 	private int[][] matrice;
 	
-	public ShiftOrResolver(String RNA, Set<Character> alphabet) {
+	public ShiftOrResolver(String RNA) {
 		this.RNA = RNA;
-		this.alphabet = alphabet;
+		this.alphabet = new char[]{'A', 'C', 'G', 'U'};
+	}
+	
+	public char[] getAlphabet() {
+		return this.alphabet;
 	}
 	
 	public String getRNA() {
 		return this.RNA;
-	}
-	
-	public Set<Character> getAlphabet() {
-		return this.alphabet;
 	}
 	
 	public int[][] getVecteurs() {
@@ -33,10 +30,7 @@ public class ShiftOrResolver {
 
 	public void buildMatrice(String motif) {
 		
-		Character[] lettres = new Character[this.alphabet.size()];
-		this.alphabet.toArray(lettres);
-		
-		this.init(motif, lettres);
+		this.init(motif);
 		
 		int[] colonne = new int[motif.length()];
 		
@@ -51,35 +45,32 @@ public class ShiftOrResolver {
 		
 		/* calcul des colonnes suivantes */
 		for(int i = 1; i < this.matrice.length; i++) {
-			colonne = this.colonneSuivante(colonne, i, lettres);
+			colonne = this.colonneSuivante(colonne, i);
 			this.matrice[i] = colonne;
 		}
 		
 	}
 	
-	public void init(String motif, Character[] lettres) {
+	public void init(String motif) {
 		this.matrice = new int[this.RNA.length()][motif.length()];
-		this.vecteurs = new int[this.alphabet.size()][motif.length()];
+		this.vecteurs = new int[this.alphabet.length][motif.length()];
 		
-		// mettre les indices des occurences des lettres du mot Ã  1
-		for(int j = 0; j < vecteurs[0].length; j++) {
-			for(int i = 0; i < vecteurs.length; i++) {
-				if(motif.charAt(j) == lettres[i])
-					vecteurs[j][i] = 1;
+		// mettre les indices des occurences des lettres du mot à 1
+		for(int j = 0; j < motif.length(); j++) {
+			for(int i = 0; i < this.alphabet.length; i++) {
+				if(motif.charAt(j) == this.alphabet[i])
+					vecteurs[i][j] = 1;
 				else
-					vecteurs[j][i] = 0;
+					vecteurs[i][j] = 0;
 			}
 		}
 	}
 	
-	public int[] colonneSuivante(int[] colonneActuelle, int index, Character[] lettres) {
-		int[] res = new int[colonneActuelle.length];
-		
+	public int[] colonneSuivante(int[] colonneActuelle, int index) {
 		int[] col1 = this.shift(colonneActuelle);
 		char c = this.RNA.charAt(index);
-		int indexVecteur;
 		int i = 0;
-		while(i < lettres.length && !lettres[i].equals(c))
+		while(i < this.alphabet.length && this.alphabet[i] != c)
 			i++;
 		int[] col2 = this.vecteurs[i];
 		
@@ -96,22 +87,18 @@ public class ShiftOrResolver {
 	}
 	
 	public int[] AND(int[] col1, int[] col2) {
-		/* On suppose que les 2 colonnes ont la mÃªme longueur */
+		/* On suppose que les 2 colonnes ont la même longueur */
 		int[] res = new int[col1.length];
 		for(int i = 0; i < res.length; i++) {
 			res[i] = (col1[i] == 1 && col2[i] == 1) ? 1 : 0;
 		}
+		
 		return res;
 	}
 	
 	public static void main(String[] args) {
-		Set<Character> alphabet = new HashSet<Character>();
-		alphabet.add('a');
-		alphabet.add('c');
-		alphabet.add('g');
-		alphabet.add('t');
-		ShiftOrResolver resolver = new ShiftOrResolver("ctactatatatc", alphabet);
-		resolver.buildMatrice("tata");
+		ShiftOrResolver resolver = new ShiftOrResolver("CUACUAUAUAUC");
+		resolver.buildMatrice("UAUA");
 		
 		int[][] matrice = resolver.getMatrice();
 		for(int i = 0; i < matrice[0].length; i++) {

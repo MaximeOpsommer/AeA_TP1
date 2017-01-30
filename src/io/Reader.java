@@ -3,22 +3,18 @@ package io;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Reader {
 	
 	private BufferedReader buffer;
 	private String file;
-	private Set<Character> alphabet;
 	
 	public Reader(String file){
 		this.file = file;
-		this.alphabet = new HashSet<Character>();
 	}
 	
 	/**
-	 * Read a ".fasta" file. Returns the DNA sequence
+	 * Read a ".fasta" file. Returns the RNA sequence
 	 * @return String
 	 * @throws IOException
 	 */
@@ -32,13 +28,7 @@ public class Reader {
 	    	builder.append(line);
 	    }
 	    res = builder.toString();
-	    createAlphabet(res);
 	    return res;
-	}
-	
-	public void createAlphabet(String str) {
-		for(char c : str.toCharArray())
-			alphabet.add(c);
 	}
 
 	public BufferedReader getBuffer() {
@@ -51,10 +41,6 @@ public class Reader {
 
 	public String getFile() {
 		return file;
-	}
-	
-	public Set<Character> getAlphabet() {
-		return this.alphabet;
 	}
 
 	public void setFile(String file) {
