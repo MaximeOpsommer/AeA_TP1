@@ -24,8 +24,18 @@ public class KMPResolverTest {
 	
 	@Test
 	public void nextTabInit1(){
-		kmp.setMotif("TAGTAG");
-		int[] expectedNext = {-1,0,0,-1,0,0,3};
+		kmp.initNext("TAGTAG");
+		int[] expectedNext = {-1,0,0,-1,0,0};
+		
+		Assert.assertEquals(6, kmp.getNext().length);
+		Assert.assertArrayEquals(expectedNext, kmp.getNext());
+		
+	}
+	
+	@Test
+	public void nextTabInit2(){
+		kmp.initNext("TACTAGA");
+		int[] expectedNext = {-1,0,0,-1,0,2,0};
 		
 		Assert.assertEquals(7, kmp.getNext().length);
 		Assert.assertArrayEquals(expectedNext, kmp.getNext());
@@ -33,13 +43,18 @@ public class KMPResolverTest {
 	}
 	
 	@Test
-	public void nextTabInit2(){
-		kmp.setMotif("TACTAGA");
-		int[] expectedNext = {-1,0,0,-1,0,2,0,0};
+	public void isBordTest(){
+		Assert.assertTrue(kmp.isBord("TA", "TACCCCCCTA"));
+		Assert.assertTrue(kmp.isBord("", "TACCCCCCTA"));
+		Assert.assertFalse(kmp.isBord("G", "TACCCCCCTA"));
 		
-		Assert.assertEquals(8, kmp.getNext().length);
-		Assert.assertArrayEquals(expectedNext, kmp.getNext());
-		
+	}
+	
+	@Test
+	public void isPrefixTest(){
+		Assert.assertTrue(kmp.isPrefix("TA", "TAGGGG"));
+		Assert.assertTrue(kmp.isPrefix("", "TAGGGG"));
+		Assert.assertFalse(kmp.isPrefix("GG", "TAGGGG"));
 	}
 	
 }
