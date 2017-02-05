@@ -1,8 +1,6 @@
 package structure;
 
-import structure.rna.RNA;
-
-public class Mot {
+public class Mot implements Comparable<Mot> {
 	
 	private String sequence;
 	private String sequenceInverse;
@@ -45,6 +43,11 @@ public class Mot {
 		System.out.println("sequence inverse : " + mot.getSequenceInverse());
 		System.out.println("sequence complémentaire : " + mot.getSequenceComplementaire());
 		System.out.println("sequence complémentaire inverse : " + mot.getSequenceComplementaireInverse());
+	}
+
+	@Override
+	public int compareTo(Mot mot) {
+		return this.sequence.compareTo(mot.getSequence());
 	}
 
 }

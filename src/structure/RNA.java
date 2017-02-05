@@ -1,4 +1,4 @@
-package structure.rna;
+package structure;
 
 public enum RNA {
 	

@@ -1,26 +1,18 @@
 package structure.resolver;
 
+import com.panayotis.gnuplot.JavaPlot;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class ShiftOrResolver {
+public class ShiftOrResolver extends Resolver {
 	
-	private char[] alphabet;
-	private final String RNA;
 	private int[][] vecteurs;
 	private int[][] matrice;
 	
-	public ShiftOrResolver(String RNA) {
-		this.RNA = RNA;
-		this.alphabet = new char[]{'A', 'C', 'G', 'U'};
-	}
-	
-	public char[] getAlphabet() {
-		return this.alphabet;
-	}
-	
-	public String getRNA() {
-		return this.RNA;
+	public ShiftOrResolver(String text) {
+		super(text);
 	}
 	
 	public int[][] getVecteurs() {
@@ -37,8 +29,8 @@ public class ShiftOrResolver {
 		
 		int[] colonne = new int[motif.length()];
 		
-		/* Première colonne */
-		if(this.RNA.charAt(0) == motif.charAt(0))
+		/* Premiere colonne */
+		if(super.text.charAt(0) == motif.charAt(0))
 			colonne[0] = 1;
 		else
 			colonne[0] = 0;
@@ -55,10 +47,10 @@ public class ShiftOrResolver {
 	}
 	
 	private void init(String motif) {
-		this.matrice = new int[this.RNA.length()][motif.length()];
+		this.matrice = new int[super.text.length()][motif.length()];
 		this.vecteurs = new int[this.alphabet.length][motif.length()];
 		
-		// mettre les indices des occurences des lettres du mot � 1
+		// mettre les indices des occurences des lettres du mot a 1
 		for(int j = 0; j < motif.length(); j++) {
 			for(int i = 0; i < this.alphabet.length; i++) {
 				if(motif.charAt(j) == this.alphabet[i])
@@ -71,7 +63,7 @@ public class ShiftOrResolver {
 	
 	private int[] colonneSuivante(int[] colonneActuelle, int index) {
 		int[] col1 = this.shift(colonneActuelle);
-		char c = this.RNA.charAt(index);
+		char c = super.text.charAt(index);
 		int i = 0;
 		while(i < this.alphabet.length && this.alphabet[i] != c)
 			i++;
@@ -90,7 +82,7 @@ public class ShiftOrResolver {
 	}
 	
 	public int[] AND(int[] col1, int[] col2) {
-		/* On suppose que les 2 colonnes ont la m�me longueur */
+		/* On suppose que les 2 colonnes ont la meme longueur */
 		int[] res = new int[col1.length];
 		for(int i = 0; i < res.length; i++) {
 			res[i] = (col1[i] == 1 && col2[i] == 1) ? 1 : 0;
@@ -106,9 +98,9 @@ public class ShiftOrResolver {
 		
 		int tmp = motif.length() - 1;
 		
-		for(int i = tmp; i < this.RNA.length(); i++) {
+		for(int i = tmp; i < super.text.length(); i++) {
 			if(this.matrice[i][tmp] == 1)
-				res.add(i);
+				res.add(i - tmp);
 		}
 		
 		return res;
@@ -116,17 +108,28 @@ public class ShiftOrResolver {
 	
 	public static void main(String[] args) {
 		ShiftOrResolver resolver = new ShiftOrResolver("CUACUAUAUAUC");
-		List<Integer> list = resolver.getIndexOccurences("UAUA");
 		
+		
+		List<Integer> list = resolver.getIndexOccurences("UAUA");
 		System.out.println(list);
 		
-		/*int[][] matrice = resolver.getMatrice();
+		int[][] matrice = resolver.getMatrice();
 		for(int i = 0; i < matrice[0].length; i++) {
 			for(int j = 0; j < matrice.length; j++) {
 				System.out.print(matrice[j][i]);
 			}
 			System.out.println();
-		}*/
+		}
+		
+		/*List<String> mots = resolver.getMotsDeTailleN(2, true, true, true);
+		for(String mot : mots)
+			System.out.println(mot);*/
+		
+		Map map = resolver.getOccurencesTousLesMotsDeTailleN(2, false, false, false);
+		System.out.println(map);
+		
+		JavaPlot javaPlot;
+		
 	}
 
 }
