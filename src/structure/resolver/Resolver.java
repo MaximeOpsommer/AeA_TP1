@@ -11,12 +11,20 @@ import structure.Mot;
 
 public abstract class Resolver {
 	
-	protected final char[] alphabet = new char[]{'A', 'C', 'G', 'U'};
+	protected final char[] alphabet;
+	protected final char[] dna = new char[]{'A', 'C', 'G', 'T'};
+	protected final char[] rna = new char[]{'A', 'C', 'G', 'U'};
 	protected final String text;
 	private int[] combinaisons;
 	
-	public Resolver(String text) {
+	public Resolver(String text) throws Exception {
 		this.text = text;
+		if(text.contains("T"))
+			this.alphabet = this.dna;
+		else if(text.contains("U"))
+			this.alphabet = this.rna;
+		else
+			throw new Exception("The fasta file is incorrect, there is no 'U' nor 'T'");
 	}
 	
 	public char[] getAlphabet() {
@@ -101,6 +109,8 @@ public abstract class Resolver {
 			if(complementaireInverse)
 				res.get(str).addAll(this.getIndexOccurences(mot.getSequenceComplementaireInverse()));
 		}
+		
+		while(res.values().remove(new HashSet<Integer>()));
 		
 		return res;
 	}

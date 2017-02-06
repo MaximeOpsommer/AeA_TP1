@@ -22,13 +22,12 @@ public class Reader {
 		FileReader fr = new FileReader(this.file);
 		StringBuilder builder = new StringBuilder();
 		buffer = new BufferedReader(fr);
-		String line, res;
+		String line;
 		buffer.readLine(); //first line is not an DNA sequence
 	    while ((line = buffer.readLine()) != null) {
 	    	builder.append(line);
 	    }
-	    res = builder.toString();
-	    return res;
+	    return builder.toString();
 	}
 
 	public BufferedReader getBuffer() {

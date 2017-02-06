@@ -41,11 +41,10 @@ public class Mot implements Comparable<Mot> {
 		Mot mot = new Mot("UACUAGA");
 		System.out.println("sequence : " + mot.getSequence());
 		System.out.println("sequence inverse : " + mot.getSequenceInverse());
-		System.out.println("sequence complémentaire : " + mot.getSequenceComplementaire());
-		System.out.println("sequence complémentaire inverse : " + mot.getSequenceComplementaireInverse());
+		System.out.println("sequence complï¿½mentaire : " + mot.getSequenceComplementaire());
+		System.out.println("sequence complï¿½mentaire inverse : " + mot.getSequenceComplementaireInverse());
 	}
 
-	@Override
 	public int compareTo(Mot mot) {
 		return this.sequence.compareTo(mot.getSequence());
 	}

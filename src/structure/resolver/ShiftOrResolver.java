@@ -1,17 +1,20 @@
 package structure.resolver;
 
-import com.panayotis.gnuplot.JavaPlot;
+import io.Reader;
+import io.Writer;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ShiftOrResolver extends Resolver {
 	
 	private int[][] vecteurs;
 	private int[][] matrice;
 	
-	public ShiftOrResolver(String text) {
+	public ShiftOrResolver(String text) throws Exception {
 		super(text);
 	}
 	
@@ -107,28 +110,38 @@ public class ShiftOrResolver extends Resolver {
 	}
 	
 	public static void main(String[] args) {
-		ShiftOrResolver resolver = new ShiftOrResolver("CUACUAUAUAUC");
+		try {
+			File file = new File("data-mirna/ARNmessager-1.fasta");
+			Reader reader = new Reader(file.getPath());
+			String texte = reader.readFasta();
+			Resolver resolver;
+			//resolver = new ShiftOrResolver("CUACUAUAUAUC");
+			resolver = new ShiftOrResolver(texte);
 		
-		
-		List<Integer> list = resolver.getIndexOccurences("UAUA");
-		System.out.println(list);
-		
-		int[][] matrice = resolver.getMatrice();
-		for(int i = 0; i < matrice[0].length; i++) {
-			for(int j = 0; j < matrice.length; j++) {
-				System.out.print(matrice[j][i]);
-			}
-			System.out.println();
+			/*List<Integer> list = resolver.getIndexOccurences("UAUA");
+			System.out.println(list);*/
+			
+			/*int[][] matrice = resolver.getMatrice();
+			for(int i = 0; i < matrice[0].length; i++) {
+				for(int j = 0; j < matrice.length; j++) {
+					System.out.print(matrice[j][i]);
+				}
+				System.out.println();
+			}*/
+			
+			/*List<String> mots = resolver.getMotsDeTailleN(2, true, true, true);
+			for(String mot : mots)
+				System.out.println(mot);*/
+			
+			Map<String, Set<Integer>> map = resolver.getOccurencesTousLesMotsDeTailleN(10, true, true, true);
+			System.out.println(map);
+			
+			Writer writer = new Writer(map, file.getName().substring(0, file.getName().length() - 6));
+			writer.writeFile();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		/*List<String> mots = resolver.getMotsDeTailleN(2, true, true, true);
-		for(String mot : mots)
-			System.out.println(mot);*/
-		
-		Map map = resolver.getOccurencesTousLesMotsDeTailleN(2, false, false, false);
-		System.out.println(map);
-		
-		JavaPlot javaPlot;
 		
 	}
 
