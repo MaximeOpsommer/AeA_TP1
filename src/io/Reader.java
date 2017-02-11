@@ -24,9 +24,9 @@ public class Reader {
 		buffer = new BufferedReader(fr);
 		String line;
 		buffer.readLine(); //first line is not an DNA sequence
-	    while ((line = buffer.readLine()) != null) {
+	    while ((line = buffer.readLine()) != null)
 	    	builder.append(line);
-	    }
+	    buffer.close();
 	    return builder.toString();
 	}
 

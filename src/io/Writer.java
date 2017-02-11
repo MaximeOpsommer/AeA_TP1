@@ -38,10 +38,15 @@ public class Writer {
 
 	public void writeFile() {
 		try {
-			File f = new File("data-plot/" + this.originalFileName + ".data");
+			File parent = new File("data-plot");
+			if(!parent.exists())
+				parent.createNewFile();
+			if(!parent.isDirectory())
+				parent.mkdir();
+			File f = new File(parent, this.originalFileName + ".data");
+			f.createNewFile();
 			FileWriter fw = new FileWriter(f);
 			fw.write(this.generateDataFileFromMap());
-			f.createNewFile();
 			fw.close();
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -1,137 +1,78 @@
 package structure.resolver;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class KMPResolver {
-
+public class KMPResolver extends Resolver {
+	
 	private int[] next;
-	private Set<Character> alphabet;
-	private String dna;
-	private String motif;
 
-	public KMPResolver(String dna, Set<Character> alphabet) {
-		this.dna = dna;
-		this.alphabet = alphabet;
+	public KMPResolver(String text) throws Exception {
+		super(text);
+	}
+
+	@Override
+	public List<Integer> getIndexOccurences(String motif) {
+		this.init(motif);
+		
+		List<Integer> res = new ArrayList<Integer>();
+		
+		int limit = super.text.length() - motif.length();
+		int tmp;
+		for(int i = 0; i <= limit; i++) {
+			tmp = checkMotif(motif, i);
+			if(tmp == motif.length())
+				res.add(i);
+			else
+				i += (tmp - this.next[tmp]) - 1;
+		}
+		
+		return res;
 	}
 	
-	public Integer[] searchOcc(String motif){
-		initNext(motif);
-		
-		List<Integer> occs = new ArrayList<>();
-		
-		int i = 0;
-		while(i < dna.length()){
-			
-			//TODO search
-			if(checkMotif(i))
-				occs.add(i);
-			
-			i++;
+	public int checkMotif(String motif, int position) {
+		for(int i = 0; i < motif.length(); i++) {
+			if(super.text.charAt(position + i) != motif.charAt(i))
+				return i;
 		}
-		
-		
-		return (Integer[]) occs.toArray();
-		
-		
-	}
-	
-	public boolean checkMotif(int position){
-		for(int i = position; i < motif.length();i++){
-			if(motif.charAt(i) != dna.charAt(position)){
-				position -= next[i];
-				return false;
-			}
-			position++;
-		}
-		return true;
+		return motif.length();
 	}
 
-	public void initNext(String motif) {
-		this.setMotif(motif);
-		this.next = new int[motif.length()];
-
-		for (int i = 0; i < this.next.length; i++) {
-			next[i] = best(i);
-		}
-
+	@Override
+	protected void init(String motif) {
+		this.next = new int[motif.length() + 1];
+		this.next[0] = -1;
+		for (int i = 1; i < this.next.length; i++)
+			next[i] = best(motif + ' ', i);
 	}
 
-	public int best(int i) {
-		char c = motif.charAt(i);
+	private int best(String motif, int i) {
+		String string = motif.substring(0, i);
+		Set<String> bords = listeBords(string);
 		int max = -1;
-		String u;
-		for (int j = 0; j < i; j++) {
-			u = motif.substring(0, j);
-			if (isBord(u, motif.substring(0, i))) {
-				if (!isPrefix(u + c, this.motif)) {
-					if (max < u.length()) {
-						max = u.length();
-					}
-				}
-			}
+		for(String str : bords) {
+			int tmp = str.length();
+			if(!motif.startsWith(str + motif.charAt(i)) && tmp > max)
+				max = tmp;
 		}
 		return max;
 	}
-
-	public boolean isBord(String u, String word) {
-		String wordPref = word.substring(0, u.length());
-		String wordSuf = word.substring(word.length() - u.length(), word.length());
-		return u.equals(wordSuf) && u.equals(wordPref);
-	}
-
-	public boolean isPrefix(String u, String word) {
-		return u.equals(word.substring(0, u.length()));
-	}
-
-	/*
-	 * 
-	 * GETTERS AND SETTERS
-	 * 
-	 */
-
-	public void setMotif(String motif) {
-		this.motif = motif;
-	}
-
-	public String getMotif() {
-		return motif;
-	}
-
-	public int[] getNext() {
-		return next;
-	}
-
-	public void setNext(int[] next) {
-		this.next = next;
-	}
-
-	public String getDna() {
-		return dna;
-	}
-
-	public void setDna(String dna) {
-		this.dna = dna;
-	}
-
-	public Set<Character> getAlphabet() {
-		return alphabet;
-	}
-
-	public void setAlphabet(Set<Character> alphabet) {
-		this.alphabet = alphabet;
-	}
-
-	public String nextToString() {
-		String res = "{";
-		for (int i = 0; i < this.next.length; i++) {
-			res += next[i];
-			if (i != this.next.length - 1) {
-				res += ",";
-			}
+	
+	private Set<String> listeBords(String string) {
+		Set<String> res = new HashSet<String>();
+		String substring;
+		for(int i = 0; i < string.length(); i++) {
+			substring = string.substring(0, i);
+			if(estUnBord(string, substring))
+					res.add(substring);
 		}
-		return res + "}";
+		return res;
+	}
+	
+	private boolean estUnBord(String string, String substring) {
+		return string.startsWith(substring) && string.endsWith(substring);
 	}
 
 }

@@ -36,14 +36,6 @@ public class Mot implements Comparable<Mot> {
 			builder.append(RNA.valueOf(c + "").getOpposite());
 		return builder.toString();
 	}
-	
-	public static void main(String[] args) {
-		Mot mot = new Mot("UACUAGA");
-		System.out.println("sequence : " + mot.getSequence());
-		System.out.println("sequence inverse : " + mot.getSequenceInverse());
-		System.out.println("sequence compl�mentaire : " + mot.getSequenceComplementaire());
-		System.out.println("sequence compl�mentaire inverse : " + mot.getSequenceComplementaireInverse());
-	}
 
 	public int compareTo(Mot mot) {
 		return this.sequence.compareTo(mot.getSequence());

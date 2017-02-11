@@ -16,6 +16,7 @@ public abstract class Resolver {
 	protected final char[] rna = new char[]{'A', 'C', 'G', 'U'};
 	protected final String text;
 	private int[] combinaisons;
+	private List<String> motsDeTailleN;
 	
 	public Resolver(String text) throws Exception {
 		this.text = text;
@@ -71,30 +72,30 @@ public abstract class Resolver {
 	 * @return La liste des mots avec les modes de recherches indiques en parametres
 	 */
 	public List<String> getMotsDeTailleN(int n, boolean inverse, boolean complementaire, boolean complementaireInverse) {
-		List<String> res = new ArrayList<String>();
+		this.motsDeTailleN = new ArrayList<String>();
 		this.combinaisons = new int[n];
 		Mot mot;
 		while(!this.estDerniereCombinaison()) {
 			mot = new Mot(this.getCombinaison());
-			if(!res.contains(mot.getSequence())
-					&& (!inverse || (inverse && !res.contains(mot.getSequenceInverse())))
-					&& (!complementaire || (complementaire && !res.contains(mot.getSequenceComplementaire())))
-					&& (!complementaireInverse || (complementaireInverse && !res.contains(mot.getSequenceComplementaireInverse()))))
-				res.add(mot.getSequence());
+			if(!this.motsDeTailleN.contains(mot.getSequence())
+					&& (!inverse || (inverse && !this.motsDeTailleN.contains(mot.getSequenceInverse())))
+					&& (!complementaire || (complementaire && !this.motsDeTailleN.contains(mot.getSequenceComplementaire())))
+					&& (!complementaireInverse || (complementaireInverse && !this.motsDeTailleN.contains(mot.getSequenceComplementaireInverse()))))
+				this.motsDeTailleN.add(mot.getSequence());
 			this.combinaisonSuivante();
 		}
 		mot = new Mot(this.getCombinaison());
-		if(!res.contains(mot.getSequence())
-				&& (!inverse || (inverse && !res.contains(mot.getSequenceInverse())))
-				&& (!complementaire || (complementaire && !res.contains(mot.getSequenceComplementaire())))
-				&& (!complementaireInverse || (complementaireInverse && !res.contains(mot.getSequenceComplementaireInverse()))))
-			res.add(mot.getSequence());
-		return res;
+		if(!this.motsDeTailleN.contains(mot.getSequence())
+				&& (!inverse || (inverse && !this.motsDeTailleN.contains(mot.getSequenceInverse())))
+				&& (!complementaire || (complementaire && !this.motsDeTailleN.contains(mot.getSequenceComplementaire())))
+				&& (!complementaireInverse || (complementaireInverse && !this.motsDeTailleN.contains(mot.getSequenceComplementaireInverse()))))
+			this.motsDeTailleN.add(mot.getSequence());
+		return this.motsDeTailleN;
 	}
 	
 	public Map<String, Set<Integer>> getOccurencesTousLesMotsDeTailleN(int n, boolean inverse, boolean complementaire, boolean complementaireInverse) {
 		Map<String, Set<Integer>> res = new HashMap<String, Set<Integer>>();
-		
+
 		List<String> motsDeTailleN = this.getMotsDeTailleN(n, inverse, complementaire, complementaireInverse);
 		
 		Mot mot;
@@ -116,5 +117,7 @@ public abstract class Resolver {
 	}
 	
 	public abstract List<Integer> getIndexOccurences(String motif);
+	
+	protected abstract void init(String motif);
 
 }

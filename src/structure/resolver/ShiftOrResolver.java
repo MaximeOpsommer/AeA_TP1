@@ -49,7 +49,7 @@ public class ShiftOrResolver extends Resolver {
 		
 	}
 	
-	private void init(String motif) {
+	protected void init(String motif) {
 		this.matrice = new int[super.text.length()][motif.length()];
 		this.vecteurs = new int[this.alphabet.length][motif.length()];
 		
@@ -107,42 +107,6 @@ public class ShiftOrResolver extends Resolver {
 		}
 		
 		return res;
-	}
-	
-	public static void main(String[] args) {
-		try {
-			File file = new File("data-mirna/ARNmessager-1.fasta");
-			Reader reader = new Reader(file.getPath());
-			String texte = reader.readFasta();
-			Resolver resolver;
-			//resolver = new ShiftOrResolver("CUACUAUAUAUC");
-			resolver = new ShiftOrResolver(texte);
-		
-			/*List<Integer> list = resolver.getIndexOccurences("UAUA");
-			System.out.println(list);*/
-			
-			/*int[][] matrice = resolver.getMatrice();
-			for(int i = 0; i < matrice[0].length; i++) {
-				for(int j = 0; j < matrice.length; j++) {
-					System.out.print(matrice[j][i]);
-				}
-				System.out.println();
-			}*/
-			
-			/*List<String> mots = resolver.getMotsDeTailleN(2, true, true, true);
-			for(String mot : mots)
-				System.out.println(mot);*/
-			
-			Map<String, Set<Integer>> map = resolver.getOccurencesTousLesMotsDeTailleN(10, true, true, true);
-			System.out.println(map);
-			
-			Writer writer = new Writer(map, file.getName().substring(0, file.getName().length() - 6));
-			writer.writeFile();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 	}
 
 }
