@@ -72,6 +72,17 @@ public abstract class Resolver {
 	 * @return La liste des mots avec les modes de recherches indiques en parametres
 	 */
 	public List<String> getMotsDeTailleN(int n, boolean inverse, boolean complementaire, boolean complementaireInverse) {
+
+		System.out.println("Calcul de tous les mots de taille " + n);
+		System.out.println("Seront comptées comme occurences :");
+		System.out.println("- la séquence");
+		if(inverse)
+			System.out.println("- la séquence inverse");
+		if(complementaire)
+			System.out.println("- la séquence complémentaire");
+		if(complementaireInverse)
+			System.out.println("- la séquence complémentaire inverse"); 
+
 		this.motsDeTailleN = new ArrayList<String>();
 		this.combinaisons = new int[n];
 		Mot mot;
@@ -97,6 +108,8 @@ public abstract class Resolver {
 		Map<String, Set<Integer>> res = new HashMap<String, Set<Integer>>();
 
 		List<String> motsDeTailleN = this.getMotsDeTailleN(n, inverse, complementaire, complementaireInverse);
+
+		System.out.println("Recherche des occurences");
 		
 		Mot mot;
 		for(String str : motsDeTailleN) {

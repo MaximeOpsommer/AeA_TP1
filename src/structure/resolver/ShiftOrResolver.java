@@ -1,13 +1,7 @@
 package structure.resolver;
 
-import io.Reader;
-import io.Writer;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class ShiftOrResolver extends Resolver {
 	

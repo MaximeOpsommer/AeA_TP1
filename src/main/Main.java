@@ -15,28 +15,33 @@ public class Main {
 		
 		if(args.length != 5) {
 			System.err.println("Le nombre d'arugments est incorrect");
-			System.err.println("Veuillez indique le fichier, la taille N, ainsi que 3 booléens qui comptent comme occurrence respectivement l'inverse, le complémentaire et le complémentaire inverse");
-		}
+			System.err.println("Veuillez indique le fichier, la taille N, ainsi que 3 booleens qui comptent comme occurrence respectivement l'inverse, le complementaire et le complementaire inverse");
+		} else {
 		
-		try {
+			try {
 			
-			File file = new File(args[0]);
-			int tailleN = Integer.parseInt(args[1]);
-			boolean inverse = Boolean.parseBoolean(args[2]);
-			boolean complementaire = Boolean.parseBoolean(args[3]);
-			boolean complementaireInverse = Boolean.parseBoolean(args[4]);
+				File file = new File(args[0]);
+				int tailleN = Integer.parseInt(args[1]);
+				boolean inverse = Boolean.parseBoolean(args[2]);
+				boolean complementaire = Boolean.parseBoolean(args[3]);
+				boolean complementaireInverse = Boolean.parseBoolean(args[4]);
 			
-			Reader reader = new Reader(file.getPath());
-			String texte = reader.readFasta();
-			Resolver resolver = new KMPResolver(texte);
+				Reader reader = new Reader(file.getPath());
+				System.out.println("Lecture du fichier " + file.getName());
+				String texte = reader.readFasta();
+
+				Resolver resolver = new KMPResolver(texte);
 			
-			Map<String, Set<Integer>> map = resolver.getOccurencesTousLesMotsDeTailleN(tailleN, inverse, complementaire, complementaireInverse);
-			Writer writer = new Writer(map, file.getName().substring(0, file.getName().length() - 6));
-			writer.writeFile();
+				Map<String, Set<Integer>> map = resolver.getOccurencesTousLesMotsDeTailleN(tailleN, inverse, complementaire, complementaireInverse);
+				Writer writer = new Writer(map, file.getName().substring(0, file.getName().length() - 6));
+				writer.writeFile();
+
+				System.out.println("Fichier cree, pret a lancer GnuPlot");
 			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

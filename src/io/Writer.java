@@ -40,12 +40,11 @@ public class Writer {
 		try {
 			File parent = new File("data-plot");
 			if(!parent.exists())
-				parent.createNewFile();
-			if(!parent.isDirectory())
 				parent.mkdir();
 			File f = new File(parent, this.originalFileName + ".data");
 			f.createNewFile();
 			FileWriter fw = new FileWriter(f);
+			System.out.println("Ecriture du fichier " + this.originalFileName + ".data");
 			fw.write(this.generateDataFileFromMap());
 			fw.close();
 		} catch (IOException e) {
